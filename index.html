@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WeFOM Aktiv – FOMConnect Event Dashboard</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --ink: #172033;
+      --muted: #667085;
+      --line: #e5e7eb;
+      --blue: #1f4fd8;
+      --blue-soft: #eaf0ff;
+      --green: #087f5b;
+      --green-soft: #e8f7f0;
+      --orange: #f97316;
+      --orange-soft: #fff3e8;
+      --purple: #6941c6;
+      --purple-soft: #f1ecff;
+      --red: #c2410c;
+      --red-soft: #fff1eb;
+      --radius: 18px;
+      --shadow: 0 14px 35px rgba(23, 32, 51, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at top left, #eaf0ff 0, transparent 34%), var(--bg);
+      line-height: 1.5;
+    }
+
+    header {
+      padding: 56px 24px 32px;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      background: var(--blue-soft);
+      color: var(--blue);
+      border: 1px solid rgba(31, 79, 216, 0.16);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: .02em;
+    }
+
+    h1 {
+      margin: 18px 0 14px;
+      max-width: 900px;
+      font-size: clamp(34px, 6vw, 68px);
+      line-height: .98;
+      letter-spacing: -0.06em;
+    }
+
+    .lead {
+      max-width: 850px;
+      color: var(--muted);
+      font-size: clamp(17px, 2vw, 21px);
+    }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto 72px;
+      padding: 0 24px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: rgba(255,255,255,.86);
+      border: 1px solid rgba(229,231,235,.9);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      backdrop-filter: blur(12px);
+    }
+
+    .span-3 { grid-column: span 3; }
+    .span-4 { grid-column: span 4; }
+    .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; }
+    .span-7 { grid-column: span 7; }
+    .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 26px;
+      letter-spacing: -0.035em;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    p { margin: 0 0 12px; }
+
+    .muted { color: var(--muted); }
+    .small { font-size: 14px; }
+    .strong { font-weight: 800; }
+
+    .kpi {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-height: 146px;
+    }
+
+    .kpi .num {
+      font-size: 44px;
+      font-weight: 900;
+      letter-spacing: -0.06em;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      margin: 4px 6px 4px 0;
+      white-space: nowrap;
+    }
+
+    .tag.blue { color: var(--blue); background: var(--blue-soft); }
+    .tag.green { color: var(--green); background: var(--green-soft); }
+    .tag.orange { color: var(--red); background: var(--orange-soft); }
+    .tag.purple { color: var(--purple); background: var(--purple-soft); }
+
+    .section-title {
+      grid-column: span 12;
+      margin: 32px 0 0;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+
+    .event-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .event-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--blue), var(--purple), var(--orange));
+    }
+
+    .event-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0;
+    }
+
+    ul, ol { padding-left: 20px; margin: 10px 0 0; }
+    li { margin: 7px 0; }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+    }
+
+    .phase {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 16px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .phase .week {
+      font-weight: 900;
+      color: var(--blue);
+    }
+
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      min-width: 760px;
+    }
+
+    th, td {
+      padding: 13px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      background: #fafafa;
+    }
+
+    .checklist {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .checkitem {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .template {
+      white-space: pre-wrap;
+      background: #111827;
+      color: #f9fafb;
+      padding: 18px;
+      border-radius: 14px;
+      font-size: 14px;
+      overflow-x: auto;
+    }
+
+    details {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin: 10px 0;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 850;
+    }
+
+    .footer-note {
+      margin-top: 26px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 920px) {
+      .span-3, .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 12; }
+      .checklist { grid-template-columns: 1fr; }
+      .phase { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="eyebrow">WeFOM Aktiv · FOMConnect · Startphase</div>
+    <h1>Event-Dashboard für vernetzte, berufstätige FOM-Studierende</h1>
+    <p class="lead">Ziel: wiederholbare Eventformate schaffen, bei denen Einzelpersonen leicht einsteigen, neue Kontakte knüpfen und mit einem klaren Nutzen nach Hause gehen. Fokus: Business-Kontext, entspannte Atmosphäre, klare Aufgaben, keine peinlichen Leerlaufmomente.</p>
+  </header>
+
+  <main class="grid">
+    <section class="card span-3 kpi">
+      <span class="tag blue">Startziel</span>
+      <div class="num">3</div>
+      <p class="strong">Pilotformate in 8 Wochen</p>
+      <p class="small muted">Lieber wenige Formate sauber testen als zu viele Ideen halbgar ausrollen.</p>
+    </section>
+
+    <section class="card span-3 kpi">
+      <span class="tag green">Zielgruppe</span>
+      <div class="num">15–30</div>
+      <p class="strong">Teilnehmende je Event</p>
+      <p class="small muted">Klein genug für Vertrauen, groß genug für Netzwerkdynamik.</p>
+    </section>
+
+    <section class="card span-3 kpi">
+      <span class="tag orange">Timing</span>
+      <div class="num">17:30</div>
+      <p class="strong">bis 20:00 Uhr</p>
+      <p class="small muted">Passend für Berufstätige nach Arbeit und vor spätem Heimweg.</p>
+    </section>
+
+    <section class="card span-3 kpi">
+      <span class="tag purple">Erfolgslogik</span>
+      <div class="num">70%</div>
+      <p class="strong">Wiederkomm-Quote als North Star</p>
+      <p class="small muted">Nicht nur Reichweite zählt, sondern echte Community-Bindung.</p>
+    </section>
+
+    <section class="card span-7">
+      <h2>Positionierung</h2>
+      <p><strong>FOMConnect ist kein klassisches Networking-Event.</strong> Es ist der sichere Einstiegspunkt für Studierende, die neben Job und Studium neue Kontakte, Sparringpartner und berufliche Impulse suchen.</p>
+      <div>
+        <span class="tag blue">niedrigschwellig</span>
+        <span class="tag green">businessnah</span>
+        <span class="tag orange">geführt statt awkward</span>
+        <span class="tag purple">regelmäßig</span>
+      </div>
+    </section>
+
+    <section class="card span-5">
+      <h2>Leitprinzip</h2>
+      <p class="strong">Jedes Event braucht einen sozialen Airbag.</p>
+      <p class="muted">Niemand soll alleine herumstehen. Deshalb bekommt jedes Format eine klare Einstiegsfrage, eine kleine Aufgabe, Hosts, Namenskarten und eine geplante erste Interaktion innerhalb der ersten 10 Minuten.</p>
+    </section>
+
+    <div class="section-title">
+      <h2>Eventformate für die Anfangsphase</h2>
+    </div>
+
+    <section class="card span-4 event-card">
+      <h3>1. FOMConnect Café Circle</h3>
+      <p class="muted">Kleine After-Work-Café-Runde mit geführten Gesprächsimpulsen.</p>
+      <div class="event-meta">
+        <span class="tag blue">15–25 Personen</span>
+        <span class="tag green">60–90 Min.</span>
+        <span class="tag orange">niedrigste Hürde</span>
+      </div>
+      <p><strong>Mechanik:</strong> 3 Gesprächsrunden à 15 Minuten mit wechselnden Gruppen.</p>
+      <ul>
+        <li>Icebreaker: „Was machst du beruflich und wobei würdest du gerne besser werden?“</li>
+        <li>Mini-Aufgabe: Jede Person sammelt einen Kontakt, mit dem sie nach dem Event weiterreden würde.</li>
+        <li>Ideal für Erstteilnehmer und Personen ohne bestehende Gruppe.</li>
+      </ul>
+    </section>
+
+    <section class="card span-4 event-card">
+      <h3>2. Career Sparring Night</h3>
+      <p class="muted">Strukturierter Austausch zu Karriere, Bewerbung, LinkedIn, Studium und Jobentwicklung.</p>
+      <div class="event-meta">
+        <span class="tag blue">20–35 Personen</span>
+        <span class="tag green">90 Min.</span>
+        <span class="tag purple">Business-Fokus</span>
+      </div>
+      <p><strong>Mechanik:</strong> Problem-Pitch in Kleingruppen.</p>
+      <ul>
+        <li>Jede Person bringt eine Frage mit: Jobwechsel, Gehalt, Studium, Bewerbung, Selbstmanagement.</li>
+        <li>Gruppe gibt 5 Minuten Feedback je Person.</li>
+        <li>Abschluss: Jede Person notiert eine konkrete nächste Aktion.</li>
+      </ul>
+    </section>
+
+    <section class="card span-4 event-card">
+      <h3>3. FOM Running & Walking Club</h3>
+      <p class="muted">Lockerer Bewegungstreff nach Feierabend. Kein Leistungsdruck.</p>
+      <div class="event-meta">
+        <span class="tag blue">10–25 Personen</span>
+        <span class="tag green">45–60 Min.</span>
+        <span class="tag orange">Community</span>
+      </div>
+      <p><strong>Mechanik:</strong> Zwei Gruppen: Walking und lockerer Lauf.</p>
+      <ul>
+        <li>Start mit Buddy-Pairing: Niemand läuft alleine.</li>
+        <li>Danach optional kurzer Getränkestopp.</li>
+        <li>Sehr gut als wiederkehrendes Format alle 2 Wochen.</li>
+      </ul>
+    </section>
+
+    <section class="card span-4 event-card">
+      <h3>4. Study & Network Table</h3>
+      <p class="muted">Gemeinsame Lernsession mit kurzem Networking-Block.</p>
+      <div class="event-meta">
+        <span class="tag blue">10–20 Personen</span>
+        <span class="tag green">120 Min.</span>
+        <span class="tag purple">prüfungsnah</span>
+      </div>
+      <p><strong>Mechanik:</strong> 25-Minuten-Fokusblöcke plus kurze Austauschphasen.</p>
+      <ul>
+        <li>Ideal vor Klausuren und Abgaben.</li>
+        <li>Teilnehmer wählen zu Beginn ihr Fach und Ziel des Abends.</li>
+        <li>Am Ende: „Was habe ich geschafft, wer kann mir helfen?“</li>
+      </ul>
+    </section>
+
+    <section class="card span-4 event-card">
+      <h3>5. Founder & Side Hustle Table</h3>
+      <p class="muted">Runde für Gründung, Selbstständigkeit, Ideen, LinkedIn, KI und digitale Projekte.</p>
+      <div class="event-meta">
+        <span class="tag blue">15–25 Personen</span>
+        <span class="tag green">90 Min.</span>
+        <span class="tag orange">hoher Mehrwert</span>
+      </div>
+      <p><strong>Mechanik:</strong> Jeder pitcht in 60 Sekunden eine Idee, ein Problem oder ein Projekt.</p>
+      <ul>
+        <li>Feedback nach klarer Formel: Chance, Risiko, nächster Schritt.</li>
+        <li>Optional: Gast aus Start-up, Consulting oder E-Commerce.</li>
+        <li>Stark für ambitionierte Studierende.</li>
+      </ul>
+    </section>
+
+    <section class="card span-4 event-card">
+      <h3>6. FOMConnect After-Lecture</h3>
+      <p class="muted">Kurzer Networking-Slot direkt nach einer Vorlesung.</p>
+      <div class="event-meta">
+        <span class="tag blue">offen</span>
+        <span class="tag green">30–45 Min.</span>
+        <span class="tag purple">sehr leicht</span>
+      </div>
+      <p><strong>Mechanik:</strong> Direkt nach Campuszeiten, ohne große Location-Planung.</p>
+      <ul>
+        <li>Host sammelt Interessierte am Ausgang oder in der Nähe des Campus.</li>
+        <li>Eine Leitfrage pro Abend, z. B. „Was war diese Woche dein größter Lernpunkt?“</li>
+        <li>Perfekt, um neue Leute in den Funnel zu holen.</li>
+      </ul>
+    </section>
+
+    <div class="section-title">
+      <h2>8-Wochen-Roadmap für den Start</h2>
+    </div>
+
+    <section class="card span-12">
+      <div class="timeline">
+        <div class="phase">
+          <div class="week">Woche 1</div>
+          <div>
+            <h3>Grundsetup</h3>
+            <p class="muted">Branding, Eventnamen, Anmeldelogik, Kommunikationskanäle und Rollen klären.</p>
+            <ul>
+              <li>Einheitliches Wording: „FOMConnect by WeFOM Aktiv“.</li>
+              <li>Simple Anmeldung via Microsoft Forms, Google Forms oder Eventbrite.</li>
+              <li>Teilnehmerdaten: Name, Studiengang, Semester, beruflicher Bereich, Teilnahmeziel.</li>
+              <li>WhatsApp-/LinkedIn-Gruppe nur als optionaler Community-Kanal.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="week">Woche 2</div>
+          <div>
+            <h3>Pilot 1: Café Circle</h3>
+            <p class="muted">Niedrigschwelliger Start mit maximaler sozialer Sicherheit.</p>
+            <ul>
+              <li>Ziel: 15–20 Personen.</li>
+              <li>Ort: Campusnahes Café, FOM-Fläche oder ruhige Lounge.</li>
+              <li>Host-Ratio: 1 Host je 8–10 Personen.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="week">Woche 3</div>
+          <div>
+            <h3>Feedback & Optimierung</h3>
+            <p class="muted">Kein Bauchgefühl. Direkt messen, was funktioniert hat.</p>
+            <ul>
+              <li>Feedbackfrage: „Würdest du wiederkommen?“</li>
+              <li>Feedbackfrage: „Hast du mindestens eine neue Person kennengelernt?“</li>
+              <li>Feedbackfrage: „Was hätte dir den Einstieg erleichtert?“</li>
+            </ul>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="week">Woche 4</div>
+          <div>
+            <h3>Pilot 2: Career Sparring Night</h3>
+            <p class="muted">Stärkerer Business-Nutzen, klarere Aufgabe, mehr Verbindlichkeit.</p>
+            <ul>
+              <li>Teilnehmer müssen vorab eine Frage einreichen.</li>
+              <li>Gruppen nach Themen clustern: Karriere, Studium, Bewerbung, Selbstständigkeit.</li>
+              <li>Am Ende Kontakte gezielt verbinden.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="week">Woche 5–6</div>
+          <div>
+            <h3>Community-Funnel aufbauen</h3>
+            <p class="muted">Aus einzelnen Events wird ein wiedererkennbares Format.</p>
+            <ul>
+              <li>Mini-Recap auf LinkedIn und internen Kanälen veröffentlichen.</li>
+              <li>Testimonials sammeln: 1 Satz von Teilnehmenden.</li>
+              <li>„Bring-a-Friend“-Mechanik testen.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="week">Woche 7</div>
+          <div>
+            <h3>Pilot 3: Running/Walking Club oder Founder Table</h3>
+            <p class="muted">Je nachdem, welches Bedürfnis aus den ersten Events sichtbar wird.</p>
+            <ul>
+              <li>Wenn viele nach lockerer Community fragen: Running/Walking Club.</li>
+              <li>Wenn viele nach Karriere/Gründung fragen: Founder & Side Hustle Table.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="week">Woche 8</div>
+          <div>
+            <h3>Entscheidung: skalieren, stoppen, verbessern</h3>
+            <p class="muted">Jedes Format bekommt eine klare Management-Entscheidung.</p>
+            <ul>
+              <li>Beibehalten: hohe Wiederkomm-Quote und gutes Feedback.</li>
+              <li>Verbessern: Interesse da, Ablauf noch schwach.</li>
+              <li>Stoppen: geringer Nutzen oder zu hoher Organisationsaufwand.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-title">
+      <h2>Bewerbungsstrategie</h2>
+    </div>
+
+    <section class="card span-6">
+      <h2>Kommunikationskanäle</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Kanal</th>
+              <th>Ziel</th>
+              <th>Content</th>
+              <th>Timing</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>FOM interne Kanäle</td>
+              <td>Basisreichweite</td>
+              <td>Kurzer Eventtext + Anmeldelink</td>
+              <td>10–14 Tage vorher</td>
+            </tr>
+            <tr>
+              <td>LinkedIn</td>
+              <td>Professionalität & Social Proof</td>
+              <td>Eventankündigung, Recap, Fotos, Zitat</td>
+              <td>10 Tage vorher + 1 Tag danach</td>
+            </tr>
+            <tr>
+              <td>WhatsApp-Gruppen</td>
+              <td>Schnelle Aktivierung</td>
+              <td>Direkte Einladung, sehr kurz, klare Uhrzeit</td>
+              <td>7 Tage, 3 Tage, Eventtag</td>
+            </tr>
+            <tr>
+              <td>Vorlesungsansprache</td>
+              <td>Vertrauen schaffen</td>
+              <td>30-Sekunden-Pitch vor/nach Vorlesung</td>
+              <td>Woche des Events</td>
+            </tr>
+            <tr>
+              <td>Campus-QR-Code</td>
+              <td>Low-Friction-Anmeldung</td>
+              <td>Poster mit Nutzenversprechen</td>
+              <td>durchgehend</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card span-6">
+      <h2>Messaging-Formel</h2>
+      <p class="strong">Nutzen + Sicherheit + klare Aufgabe + einfache Anmeldung.</p>
+      <ol>
+        <li><strong>Nutzen:</strong> „Lerne Studierende kennen, die auch Job und Studium verbinden.“</li>
+        <li><strong>Sicherheit:</strong> „Du kannst alleine kommen. Wir starten geführt in kleinen Gruppen.“</li>
+        <li><strong>Aufgabe:</strong> „Bring eine Karrierefrage oder ein Ziel für dieses Semester mit.“</li>
+        <li><strong>Einfachheit:</strong> „60–90 Minuten, campusnah, Anmeldung in 30 Sekunden.“</li>
+      </ol>
+      <p class="footer-note">Wichtig: Nicht zu sehr nach Pflichtveranstaltung klingen. Der Ton muss entspannt, modern und einladend bleiben.</p>
+    </section>
+
+    <section class="card span-12">
+      <h2>Content-Plan je Event</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Zeitpunkt</th>
+              <th>Maßnahme</th>
+              <th>Inhalt</th>
+              <th>Ziel</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>T-14 bis T-10</td>
+              <td>Save the Date</td>
+              <td>Eventname, Datum, Uhrzeit, Zielgruppe, Anmeldelink</td>
+              <td>Erste Aufmerksamkeit</td>
+            </tr>
+            <tr>
+              <td>T-7</td>
+              <td>Nutzenpost</td>
+              <td>„Warum du kommen solltest, auch wenn du niemanden kennst“</td>
+              <td>Hemmschwelle senken</td>
+            </tr>
+            <tr>
+              <td>T-3</td>
+              <td>Reminder</td>
+              <td>Klare Agenda, Location, Hinweis: Einzelpersonen willkommen</td>
+              <td>Anmeldungen finalisieren</td>
+            </tr>
+            <tr>
+              <td>T-0</td>
+              <td>Eventday Push</td>
+              <td>„Heute Abend – letzte Plätze – komm gerne auch spontan dazu“</td>
+              <td>Last-Minute-Teilnehmer</td>
+            </tr>
+            <tr>
+              <td>T+1</td>
+              <td>Recap</td>
+              <td>Foto, Dank, 2 Learnings, Ausblick auf nächstes Event</td>
+              <td>Social Proof & Wiederkommen</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="section-title">
+      <h2>Event Operating System</h2>
+    </div>
+
+    <section class="card span-6">
+      <h2>Rollenmodell</h2>
+      <div class="checklist">
+        <div class="checkitem">
+          <h3>Event Lead</h3>
+          <p class="muted">Verantwortet Format, Ziel, Ablauf, Location und finale Entscheidung.</p>
+        </div>
+        <div class="checkitem">
+          <h3>Host</h3>
+          <p class="muted">Begrüßt Teilnehmende, verbindet Einzelpersonen und moderiert den Einstieg.</p>
+        </div>
+        <div class="checkitem">
+          <h3>Content Lead</h3>
+          <p class="muted">Erstellt Ankündigung, Story, Recap und sammelt Bilder/Zitate.</p>
+        </div>
+        <div class="checkitem">
+          <h3>Community Lead</h3>
+          <p class="muted">Pflegt Teilnehmerliste, Follow-up, Feedback und nächste Einladung.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card span-6">
+      <h2>Standardablauf für Networking-Events</h2>
+      <ol>
+        <li><strong>0–10 Min.:</strong> Ankommen, Namenskarten, Hosts verbinden Einzelpersonen.</li>
+        <li><strong>10–15 Min.:</strong> Begrüßung, Ablauf, Ziel des Abends.</li>
+        <li><strong>15–35 Min.:</strong> Runde 1 in Kleingruppen mit Leitfrage.</li>
+        <li><strong>35–55 Min.:</strong> Runde 2 mit neuen Gruppen.</li>
+        <li><strong>55–75 Min.:</strong> Aufgabe: Kontakt, Idee oder nächster Schritt.</li>
+        <li><strong>75–90 Min.:</strong> Offenes Netzwerken + Hinweis auf nächstes Event.</li>
+      </ol>
+    </section>
+
+    <section class="card span-12">
+      <h2>Checkliste vor jedem Event</h2>
+      <div class="checklist">
+        <div class="checkitem">☐ Eventziel definiert: Kontakte, Karriere, Lernen, Sport oder Gründung</div>
+        <div class="checkitem">☐ Zielgruppe klar: Semester, Fachbereich oder offen für alle</div>
+        <div class="checkitem">☐ Datum ab 17:30 Uhr oder am Samstag nach der Vorlesung</div>
+        <div class="checkitem">☐ Location campusnah und leicht auffindbar</div>
+        <div class="checkitem">☐ Anmeldung mit maximal 5 Pflichtfeldern</div>
+        <div class="checkitem">☐ Hosts gebrieft: Einzelpersonen aktiv abholen</div>
+        <div class="checkitem">☐ Icebreaker und Mini-Aufgabe vorbereitet</div>
+        <div class="checkitem">☐ Content für Ankündigung, Reminder und Recap vorbereitet</div>
+        <div class="checkitem">☐ Feedbackformular vorbereitet</div>
+        <div class="checkitem">☐ Nächster Eventtermin oder Warteliste kommunizierbar</div>
+      </div>
+    </section>
+
+    <div class="section-title">
+      <h2>Vorlagen</h2>
+    </div>
+
+    <section class="card span-6">
+      <h2>Einladungstext kurz</h2>
+      <div class="template">FOMConnect startet in die nächste Runde.\n\nDu möchtest neue Leute an der FOM kennenlernen, dich über Job, Studium und Karriere austauschen und nicht einfach nur anonym zur Vorlesung kommen?\n\nDann komm zu unserer entspannten FOMConnect Runde. Du kannst auch alleine kommen – wir starten bewusst geführt in kleinen Gruppen, damit niemand awkward herumsteht.\n\n📍 Ort: [Location]\n🕠 Zeit: [Datum], [Uhrzeit]\n🎯 Thema: [Eventthema]\n\nAnmeldung: [Link]</div>
+    </section>
+
+    <section class="card span-6">
+      <h2>LinkedIn-Post</h2>
+      <div class="template">Neben Job, Studium und Alltag bleibt Networking oft auf der Strecke. Genau dafür gibt es FOMConnect by WeFOM Aktiv.\n\nUnser Ziel: Studierende der FOM in entspannter Atmosphäre zusammenbringen – ohne steife Networking-Situation, ohne Druck, aber mit echtem Mehrwert.\n\nBeim nächsten Treffen geht es um [Thema]. Wir starten mit kurzen Gesprächsimpulsen in kleinen Gruppen, damit auch Einzelpersonen leicht reinkommen.\n\n📍 [Location]\n📅 [Datum]\n🕠 [Uhrzeit]\n\nWer neue Kontakte, Austausch und frische Impulse sucht, ist herzlich willkommen.\n\n#FOM #WeFOM #FOMConnect #Networking #StudiumUndBeruf</div>
+    </section>
+
+    <section class="card span-6">
+      <h2>WhatsApp-Reminder</h2>
+      <div class="template">Kurzer Reminder: Heute Abend findet unser FOMConnect Treffen statt.\n\nWir starten um [Uhrzeit] bei [Location].\n\nDu kannst gerne auch alleine kommen – wir machen den Einstieg bewusst locker und geführt in kleinen Gruppen.\n\nThema heute: [Thema]\n\nAnmeldung/Infos: [Link]</div>
+    </section>
+
+    <section class="card span-6">
+      <h2>Recap-Text</h2>
+      <div class="template">Danke an alle, die bei unserem FOMConnect Treffen dabei waren.\n\nEs war stark zu sehen, wie schnell aus einzelnen Studierenden echte Gespräche entstanden sind – über Studium, Job, Karriere und persönliche Ziele.\n\nGenau dafür gibt es FOMConnect: niedrigschwelliger Austausch, neue Kontakte und ein Netzwerk, das im berufsbegleitenden Studium echten Mehrwert schafft.\n\nDas nächste Format folgt bald. Wer dabei sein möchte, kann sich hier vormerken: [Link]</div>
+    </section>
+
+    <div class="section-title">
+      <h2>Messung & Optimierung</h2>
+    </div>
+
+    <section class="card span-6">
+      <h2>KPIs</h2>
+      <ul>
+        <li><strong>Anmeldungen:</strong> Wie viele Personen zeigen grundsätzlich Interesse?</li>
+        <li><strong>Show-up-Rate:</strong> Zielwert mindestens 65%.</li>
+        <li><strong>Erstteilnehmerquote:</strong> Zeigt, ob der Zugang niedrigschwellig ist.</li>
+        <li><strong>Wiederkomm-Quote:</strong> Wichtigster Community-Indikator.</li>
+        <li><strong>Kontaktquote:</strong> Anteil der Personen, die mindestens einen neuen Kontakt geknüpft haben.</li>
+        <li><strong>NPS/Weiterempfehlung:</strong> „Würdest du FOMConnect weiterempfehlen?“</li>
+      </ul>
+    </section>
+
+    <section class="card span-6">
+      <h2>Feedbackformular</h2>
+      <ol>
+        <li>Wie zufrieden warst du mit dem Event von 1 bis 10?</li>
+        <li>Hast du mindestens eine neue Person kennengelernt?</li>
+        <li>War der Einstieg für dich angenehm?</li>
+        <li>Welches Thema würdest du dir als Nächstes wünschen?</li>
+        <li>Würdest du wieder teilnehmen?</li>
+        <li>Dürfen wir dich für kommende Events kontaktieren?</li>
+      </ol>
+    </section>
+
+    <section class="card span-12">
+      <h2>Entscheidungslogik nach jedem Event</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Signal</th>
+              <th>Interpretation</th>
+              <th>Maßnahme</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Viele Anmeldungen, niedrige Teilnahme</td>
+              <td>Interesse da, Commitment schwach</td>
+              <td>Reminder verbessern, Kalenderinvite senden, Warteliste kommunizieren</td>
+            </tr>
+            <tr>
+              <td>Gute Teilnahme, wenig Interaktion</td>
+              <td>Ablauf zu offen oder zu wenig geführt</td>
+              <td>Mehr Hosts, klarere Aufgaben, kleinere Gruppen</td>
+            </tr>
+            <tr>
+              <td>Hohe Wiederkomm-Absicht</td>
+              <td>Format funktioniert</td>
+              <td>Als wiederkehrendes Format planen</td>
+            </tr>
+            <tr>
+              <td>Viele Themenwünsche</td>
+              <td>Community liefert Content-Pipeline</td>
+              <td>Nächste Events aus Feedback ableiten</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="section-title">
+      <h2>GitHub-Struktur</h2>
+    </div>
+
+    <section class="card span-12">
+      <h2>Empfohlene Repository-Struktur</h2>
+      <div class="template">wefom-fomconnect-dashboard/\n├── index.html\n├── README.md\n├── assets/\n│   ├── logo-wefom.png\n│   └── event-fotos/\n├── data/\n│   ├── events.json\n│   └── feedback-template.md\n└── docs/\n    ├── checklisten.md\n    ├── vorlagen.md\n    └── event-retrospektiven.md</div>
+      <p class="footer-note">Für den Start reicht diese einzelne index.html. Später kannst du Events und KPIs in eine separate JSON-Datei auslagern und dynamisch laden.</p>
+    </section>
+
+    <section class="card span-12">
+      <h2>Nächste operative Schritte</h2>
+      <ol>
+        <li>Dashboard als <strong>index.html</strong> in ein GitHub-Repository laden.</li>
+        <li>GitHub Pages aktivieren: Settings → Pages → Deploy from branch → main → root.</li>
+        <li>Erstes Pilotformat auswählen: Empfehlung ist <strong>FOMConnect Café Circle</strong>.</li>
+        <li>Anmeldeformular erstellen und im Dashboard/README verlinken.</li>
+        <li>10–14 Tage vor Event mit Bewerbung starten.</li>
+        <li>Nach dem Event Recap und Feedback einpflegen.</li>
+      </ol>
+    </section>
+  </main>
+</body>
+</html>
