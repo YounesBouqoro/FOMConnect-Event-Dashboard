@@ -6,43 +6,34 @@
   <title>WeFOM Aktiv – FOMConnect Event Dashboard</title>
   <style>
     :root {
-  --bg: #dde2e7;
-  --card: rgba(255, 255, 255, 0.88);
-  --ink: #172033;
-  --muted: #5f6b7a;
-  --line: #cfd6dc;
-
-  /* WeFOM Flyer Farben */
-  --blue: #199a91;
-  --blue-soft: #e6f4f2;
-
-  --green: #199a91;
-  --green-soft: #e6f4f2;
-
-  --orange: #199a91;
-  --orange-soft: #e6f4f2;
-
-  --purple: #199a91;
-  --purple-soft: #e6f4f2;
-
-  --red: #199a91;
-  --red-soft: #e6f4f2;
-
-  --radius: 18px;
-  --shadow: 0 14px 35px rgba(23, 32, 51, 0.08);
-}
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --ink: #172033;
+      --muted: #667085;
+      --line: #e5e7eb;
+      --blue: #1f4fd8;
+      --blue-soft: #eaf0ff;
+      --green: #087f5b;
+      --green-soft: #e8f7f0;
+      --orange: #f97316;
+      --orange-soft: #fff3e8;
+      --purple: #6941c6;
+      --purple-soft: #f1ecff;
+      --red: #c2410c;
+      --red-soft: #fff1eb;
+      --radius: 18px;
+      --shadow: 0 14px 35px rgba(23, 32, 51, 0.08);
+    }
 
     * { box-sizing: border-box; }
 
-   body {
-  margin: 0;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  color: var(--ink);
-  background:
-    radial-gradient(circle at top left, rgba(25, 154, 145, 0.10) 0, transparent 34%),
-    linear-gradient(180deg, #e3e7eb 0%, #d9dee4 100%);
-  line-height: 1.5;
-}
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at top left, #eaf0ff 0, transparent 34%), var(--bg);
+      line-height: 1.5;
+    }
 
     header {
       padding: 56px 24px 32px;
@@ -51,18 +42,18 @@
     }
 
     .eyebrow {
-  display: inline-flex;
-  gap: 8px;
-  align-items: center;
-  background: var(--blue-soft);
-  color: var(--blue);
-  border: 1px solid rgba(25, 154, 145, 0.22);
-  padding: 8px 12px;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 13px;
-  letter-spacing: .02em;
-}
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      background: var(--blue-soft);
+      color: var(--blue);
+      border: 1px solid rgba(31, 79, 216, 0.16);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: .02em;
+    }
 
     h1 {
       margin: 18px 0 14px;
@@ -150,13 +141,10 @@
       white-space: nowrap;
     }
 
-    .tag.blue,
-.tag.green,
-.tag.orange,
-.tag.purple {
-  color: #199a91;
-  background: #e6f4f2;
-}}
+    .tag.blue { color: var(--blue); background: var(--blue-soft); }
+    .tag.green { color: var(--green); background: var(--green-soft); }
+    .tag.orange { color: var(--red); background: var(--orange-soft); }
+    .tag.purple { color: var(--purple); background: var(--purple-soft); }
 
     .section-title {
       grid-column: span 12;
@@ -171,14 +159,15 @@
     }
 
     .event-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 5px;
-  background: linear-gradient(90deg, #199a91, #28a99f, #199a91);
-}
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--blue), var(--purple), var(--orange));
+    }
+
     .event-meta {
       display: flex;
       flex-wrap: wrap;
@@ -284,7 +273,7 @@
     @media (max-width: 640px) {
       body {
         background:
-          radial-gradient(circle at top left, rgba(25, 154, 145, 0.12) 0, transparent 30%),
+          radial-gradient(circle at top left, rgba(120, 190, 32, 0.12) 0, transparent 30%),
           linear-gradient(180deg, #e4e7eb 0%, #d7dce2 100%);
       }
 
@@ -450,6 +439,495 @@
 
       .template {
         padding: 14px;
+        border-radius: 12px;
+        font-size: 12.5px;
+        line-height: 1.5;
+      }
+
+      details {
+        padding: 12px 13px;
+        border-radius: 12px;
+      }
+
+      .footer-note {
+        font-size: 13px;
+      }
+    }
+  
+
+    /* ==========================================================
+       Präzisions-Layout v2: WeFOM-Look, bessere Kachel-Ausrichtung,
+       saubere Desktop- und Mobile-Darstellung
+       ========================================================== */
+
+    :root {
+      --bg: #dde2e7;
+      --card: rgba(255, 255, 255, 0.92);
+      --ink: #172033;
+      --muted: #5f6b7a;
+      --line: #cfd6dc;
+      --blue: #199a91;
+      --blue-soft: #e6f4f2;
+      --green: #199a91;
+      --green-soft: #e6f4f2;
+      --orange: #199a91;
+      --orange-soft: #e6f4f2;
+      --purple: #199a91;
+      --purple-soft: #e6f4f2;
+      --red: #199a91;
+      --red-soft: #e6f4f2;
+      --radius: 20px;
+      --shadow: 0 18px 44px rgba(23, 32, 51, 0.075);
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 12% 4%, rgba(25, 154, 145, 0.11) 0, transparent 30%),
+        linear-gradient(180deg, #e5e9ed 0%, #dce2e7 46%, #d5dbe1 100%);
+    }
+
+    header,
+    main {
+      max-width: 1240px;
+    }
+
+    header {
+      padding-top: 46px;
+      padding-bottom: 34px;
+    }
+
+    h1 {
+      max-width: 1080px;
+      font-size: clamp(42px, 5.2vw, 66px);
+      line-height: 1.02;
+      letter-spacing: -0.055em;
+      text-wrap: balance;
+    }
+
+    .lead {
+      max-width: 980px;
+      line-height: 1.65;
+      text-wrap: pretty;
+    }
+
+    .grid {
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      color: #199a91;
+      background: rgba(230, 244, 242, 0.9);
+      border-color: rgba(25, 154, 145, 0.22);
+    }
+
+    h2,
+    h3,
+    .strong {
+      text-wrap: balance;
+    }
+
+    p,
+    li {
+      overflow-wrap: break-word;
+    }
+
+    .tag.blue,
+    .tag.green,
+    .tag.orange,
+    .tag.purple {
+      color: #199a91;
+      background: #e6f4f2;
+    }
+
+    .section-title {
+      margin-top: 38px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(25, 154, 145, 0.22);
+    }
+
+    .section-title h2 {
+      margin-bottom: 0;
+      font-size: clamp(24px, 3vw, 34px);
+    }
+
+    .kpi {
+      min-height: 224px;
+      justify-content: flex-start;
+      gap: 12px;
+    }
+
+    .kpi .tag {
+      width: fit-content;
+      margin-bottom: 10px;
+    }
+
+    .kpi .num {
+      font-size: clamp(44px, 4vw, 58px);
+      line-height: 0.95;
+      letter-spacing: -0.07em;
+    }
+
+    .kpi p.strong {
+      min-height: 48px;
+      margin: 0;
+      line-height: 1.28;
+      font-size: 17px;
+    }
+
+    .kpi .small {
+      margin-top: auto;
+      line-height: 1.55;
+    }
+
+    .event-card {
+      min-height: 430px;
+      gap: 8px;
+    }
+
+    .event-card::before {
+      height: 5px;
+      background: linear-gradient(90deg, #199a91, #28a99f, #199a91);
+    }
+
+    .event-card h3 {
+      font-size: 20px;
+      line-height: 1.22;
+      min-height: 48px;
+    }
+
+    .event-card > p:first-of-type {
+      min-height: 48px;
+      line-height: 1.5;
+    }
+
+    .event-meta {
+      margin: 12px 0 10px;
+      gap: 6px;
+    }
+
+    .event-card ul {
+      margin-top: 4px;
+    }
+
+    .event-card li {
+      line-height: 1.45;
+    }
+
+    .phase {
+      grid-template-columns: 130px 1fr;
+      align-items: start;
+      padding: 18px;
+      background: rgba(255, 255, 255, 0.86);
+    }
+
+    .phase .week {
+      display: inline-flex;
+      width: fit-content;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #e6f4f2;
+      color: #199a91;
+      line-height: 1.1;
+    }
+
+    .phase h3 {
+      margin-bottom: 6px;
+    }
+
+    .checklist {
+      align-items: stretch;
+    }
+
+    .checkitem {
+      height: 100%;
+      line-height: 1.45;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      min-width: 0;
+      table-layout: fixed;
+    }
+
+    th,
+    td {
+      line-height: 1.38;
+      overflow-wrap: anywhere;
+    }
+
+    th {
+      color: #199a91;
+      background: rgba(230, 244, 242, 0.82);
+    }
+
+    .template {
+      white-space: pre-wrap;
+      line-height: 1.55;
+    }
+
+    /* Zweispaltige Bereiche sauberer halten */
+    .span-6 .table-wrap table {
+      font-size: 13px;
+    }
+
+    .span-6 th,
+    .span-6 td {
+      padding: 11px 10px;
+    }
+
+    @media (max-width: 1120px) {
+      .span-3 { grid-column: span 6; }
+      .kpi { min-height: 190px; }
+      .event-card { min-height: auto; }
+      .event-card h3,
+      .event-card > p:first-of-type {
+        min-height: 0;
+      }
+    }
+
+    @media (max-width: 920px) {
+      header {
+        padding-top: 34px;
+      }
+
+      h1 {
+        font-size: clamp(36px, 7vw, 54px);
+      }
+
+      .span-3,
+      .span-4,
+      .span-5,
+      .span-6,
+      .span-7,
+      .span-8 {
+        grid-column: span 12;
+      }
+
+      .phase {
+        grid-template-columns: 1fr;
+      }
+
+      .checklist {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        background:
+          radial-gradient(circle at top left, rgba(25, 154, 145, 0.12) 0, transparent 30%),
+          linear-gradient(180deg, #e4e8ec 0%, #d8dee4 100%);
+      }
+
+      header {
+        padding: 24px 16px 16px;
+      }
+
+      main {
+        padding: 0 14px;
+        margin-bottom: 42px;
+      }
+
+      .grid {
+        gap: 12px;
+      }
+
+      .eyebrow {
+        font-size: 11px;
+        line-height: 1.2;
+        padding: 7px 10px;
+        max-width: 100%;
+      }
+
+      h1 {
+        margin: 14px 0 10px;
+        font-size: 34px;
+        line-height: 1.04;
+        letter-spacing: -0.05em;
+      }
+
+      .lead {
+        font-size: 15px;
+        line-height: 1.52;
+      }
+
+      .card {
+        padding: 15px;
+        border-radius: 16px;
+        box-shadow: 0 10px 24px rgba(23, 32, 51, 0.065);
+      }
+
+      h2 {
+        font-size: 21px;
+        line-height: 1.16;
+        margin-bottom: 10px;
+      }
+
+      h3 {
+        font-size: 16px;
+        line-height: 1.25;
+      }
+
+      p,
+      li {
+        font-size: 14px;
+      }
+
+      ul,
+      ol {
+        padding-left: 18px;
+      }
+
+      .kpi {
+        min-height: auto;
+        display: grid;
+        grid-template-columns: 78px 1fr;
+        align-items: start;
+        gap: 7px 13px;
+      }
+
+      .kpi .tag {
+        grid-column: 1 / -1;
+        margin: 0 0 3px;
+      }
+
+      .kpi .num {
+        font-size: 36px;
+        line-height: 1;
+        padding-top: 2px;
+      }
+
+      .kpi p.strong {
+        min-height: 0;
+        font-size: 15px;
+        line-height: 1.28;
+        align-self: center;
+      }
+
+      .kpi .small {
+        grid-column: 1 / -1;
+        margin-top: 4px;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .tag {
+        font-size: 11px;
+        padding: 5px 8px;
+        margin: 2px 3px 2px 0;
+      }
+
+      .section-title {
+        margin: 18px 0 0;
+        padding-top: 12px;
+      }
+
+      .section-title h2 {
+        font-size: 23px;
+      }
+
+      .event-card {
+        min-height: auto;
+        gap: 6px;
+      }
+
+      .event-card::before {
+        height: 4px;
+      }
+
+      .event-card h3,
+      .event-card > p:first-of-type {
+        min-height: 0;
+      }
+
+      .event-meta {
+        gap: 4px;
+        margin: 8px 0;
+      }
+
+      .timeline {
+        gap: 10px;
+      }
+
+      .phase {
+        padding: 13px;
+        gap: 8px;
+        border-radius: 13px;
+      }
+
+      .phase .week {
+        font-size: 12px;
+        padding: 6px 9px;
+      }
+
+      .table-wrap {
+        overflow-x: visible;
+      }
+
+      table,
+      thead,
+      tbody,
+      th,
+      td,
+      tr {
+        display: block;
+      }
+
+      table {
+        min-width: 0;
+        font-size: 13px;
+      }
+
+      thead {
+        display: none;
+      }
+
+      tr {
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        padding: 10px 12px;
+        margin-bottom: 10px;
+      }
+
+      td {
+        border-bottom: 0;
+        padding: 5px 0;
+      }
+
+      td:first-child {
+        font-weight: 850;
+        color: #199a91;
+      }
+
+      .checklist {
+        gap: 9px;
+      }
+
+      .checkitem {
+        padding: 12px;
+        border-radius: 12px;
+        font-size: 14px;
+      }
+
+      .template {
+        padding: 13px;
         border-radius: 12px;
         font-size: 12.5px;
         line-height: 1.5;
@@ -884,22 +1362,58 @@
 
     <section class="card span-6">
       <h2>Einladungstext kurz</h2>
-      <div class="template">FOMConnect startet in die nächste Runde.\n\nDu möchtest neue Leute an der FOM kennenlernen, dich über Job, Studium und Karriere austauschen und nicht einfach nur anonym zur Vorlesung kommen?\n\nDann komm zu unserer entspannten FOMConnect Runde. Du kannst auch alleine kommen – wir starten bewusst geführt in kleinen Gruppen, damit niemand awkward herumsteht.\n\n📍 Ort: [Location]\n🕠 Zeit: [Datum], [Uhrzeit]\n🎯 Thema: [Eventthema]\n\nAnmeldung: [Link]</div>
+      <div class="template">FOMConnect startet in die nächste Runde.
+
+Du möchtest neue Leute an der FOM kennenlernen, dich über Job, Studium und Karriere austauschen und nicht einfach nur anonym zur Vorlesung kommen?
+
+Dann komm zu unserer entspannten FOMConnect Runde. Du kannst auch alleine kommen – wir starten bewusst geführt in kleinen Gruppen, damit niemand awkward herumsteht.
+
+📍 Ort: [Location]
+🕠 Zeit: [Datum], [Uhrzeit]
+🎯 Thema: [Eventthema]
+
+Anmeldung: [Link]</div>
     </section>
 
     <section class="card span-6">
       <h2>LinkedIn-Post</h2>
-      <div class="template">Neben Job, Studium und Alltag bleibt Networking oft auf der Strecke. Genau dafür gibt es FOMConnect by WeFOM Aktiv.\n\nUnser Ziel: Studierende der FOM in entspannter Atmosphäre zusammenbringen – ohne steife Networking-Situation, ohne Druck, aber mit echtem Mehrwert.\n\nBeim nächsten Treffen geht es um [Thema]. Wir starten mit kurzen Gesprächsimpulsen in kleinen Gruppen, damit auch Einzelpersonen leicht reinkommen.\n\n📍 [Location]\n📅 [Datum]\n🕠 [Uhrzeit]\n\nWer neue Kontakte, Austausch und frische Impulse sucht, ist herzlich willkommen.\n\n#FOM #WeFOM #FOMConnect #Networking #StudiumUndBeruf</div>
+      <div class="template">Neben Job, Studium und Alltag bleibt Networking oft auf der Strecke. Genau dafür gibt es FOMConnect by WeFOM Aktiv.
+
+Unser Ziel: Studierende der FOM in entspannter Atmosphäre zusammenbringen – ohne steife Networking-Situation, ohne Druck, aber mit echtem Mehrwert.
+
+Beim nächsten Treffen geht es um [Thema]. Wir starten mit kurzen Gesprächsimpulsen in kleinen Gruppen, damit auch Einzelpersonen leicht reinkommen.
+
+📍 [Location]
+📅 [Datum]
+🕠 [Uhrzeit]
+
+Wer neue Kontakte, Austausch und frische Impulse sucht, ist herzlich willkommen.
+
+#FOM #WeFOM #FOMConnect #Networking #StudiumUndBeruf</div>
     </section>
 
     <section class="card span-6">
       <h2>WhatsApp-Reminder</h2>
-      <div class="template">Kurzer Reminder: Heute Abend findet unser FOMConnect Treffen statt.\n\nWir starten um [Uhrzeit] bei [Location].\n\nDu kannst gerne auch alleine kommen – wir machen den Einstieg bewusst locker und geführt in kleinen Gruppen.\n\nThema heute: [Thema]\n\nAnmeldung/Infos: [Link]</div>
+      <div class="template">Kurzer Reminder: Heute Abend findet unser FOMConnect Treffen statt.
+
+Wir starten um [Uhrzeit] bei [Location].
+
+Du kannst gerne auch alleine kommen – wir machen den Einstieg bewusst locker und geführt in kleinen Gruppen.
+
+Thema heute: [Thema]
+
+Anmeldung/Infos: [Link]</div>
     </section>
 
     <section class="card span-6">
       <h2>Recap-Text</h2>
-      <div class="template">Danke an alle, die bei unserem FOMConnect Treffen dabei waren.\n\nEs war stark zu sehen, wie schnell aus einzelnen Studierenden echte Gespräche entstanden sind – über Studium, Job, Karriere und persönliche Ziele.\n\nGenau dafür gibt es FOMConnect: niedrigschwelliger Austausch, neue Kontakte und ein Netzwerk, das im berufsbegleitenden Studium echten Mehrwert schafft.\n\nDas nächste Format folgt bald. Wer dabei sein möchte, kann sich hier vormerken: [Link]</div>
+      <div class="template">Danke an alle, die bei unserem FOMConnect Treffen dabei waren.
+
+Es war stark zu sehen, wie schnell aus einzelnen Studierenden echte Gespräche entstanden sind – über Studium, Job, Karriere und persönliche Ziele.
+
+Genau dafür gibt es FOMConnect: niedrigschwelliger Austausch, neue Kontakte und ein Netzwerk, das im berufsbegleitenden Studium echten Mehrwert schafft.
+
+Das nächste Format folgt bald. Wer dabei sein möchte, kann sich hier vormerken: [Link]</div>
     </section>
 
     <div class="section-title">
@@ -967,6 +1481,9 @@
       </div>
     </section>
 
+    <div class="section-title">
+      <h2>GitHub-Struktur</h2>
+    </div>
   </main>
 </body>
 </html>
